@@ -63,9 +63,9 @@ namespace ResturantProject.Controllers
         //}
 
         [HttpGet]
-        public IActionResult Getall()
+        public IActionResult Index()
         {
-            return Ok(repo.getall() );
+            return Ok(repo.Index() );
         }
 
         [HttpGet("{name}")]
@@ -91,5 +91,13 @@ namespace ResturantProject.Controllers
         //{
         //    return (repo.FvtplyRes(name));
         //}
+        [HttpGet]
+        public IActionResult GetbyAge(string Name,int Age)
+        {
+            var result = repo.GetbyAge(Name,Age);
+            return Ok(result);
+        }
+
+         
     }
 }

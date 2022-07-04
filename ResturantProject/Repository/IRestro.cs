@@ -7,11 +7,11 @@ namespace ResturantProject.Repository
 {
     public interface IRestro
     {
-       PlayersFavRestroList FvtplyRest(string name, bool status = true);
+        PlayersFavRestroList FvtplyRest(string name, bool status = true);
         List<dbRestaurant> ResturantByName(string name);
         List<dbPlayer> PlayerByName(string name);
 
-        List<PlayersFavRestro> getall();
+        List<PlayersFavRestro> Index();
         List<dbRestaurant> IndexforRestro();
 
         List<dbPlayer> IndexforPlayer();
@@ -31,7 +31,9 @@ namespace ResturantProject.Repository
         //List<string> FvtplyRes(string name, bool status = true);
 
         //List<string> FvtplyResatuarnt(string name);
+        PlayersFavRestroList GetbyAge(string Name, int age);
 
+        List<string> fvtplyresatuarnt(string name);
 
 
     }
@@ -42,7 +44,7 @@ namespace ResturantProject.Repository
         public abstract List<dbPlayer> PlayerByName(string name);
 
 
-        public abstract List<PlayersFavRestro> getall();
+        public abstract List<PlayersFavRestro> Index();
         public abstract List<dbRestaurant> IndexforRestro();
 
         public abstract List<dbPlayer> IndexforPlayer();
@@ -65,6 +67,9 @@ namespace ResturantProject.Repository
         public abstract PlayersFavRestroList FvtplyRest(string name, bool status = true);
 
         //public abstract List<string> FvtplyResatuarnt(string name);
+
+        public abstract PlayersFavRestroList GetbyAge(string Name, int age);
+        public abstract List<string> fvtplyresatuarnt(string name);
     }
 
     public class ResRepository : RestroAbs
@@ -180,7 +185,7 @@ namespace ResturantProject.Repository
 
         }
 
-        public override List<PlayersFavRestro> getall()
+        public override List<PlayersFavRestro> Index()
         {
             List<PlayersFavRestro> allplayer = new List<PlayersFavRestro>();
             var res = (from player in dbcontext.Playertbl
@@ -193,7 +198,7 @@ namespace ResturantProject.Repository
                        {
                            player = player,
                            restaurent = restaurent,
-                           //Fav = Fav
+
                        }).ToList();
 
             foreach (var item in res)
@@ -247,25 +252,97 @@ namespace ResturantProject.Repository
 
         }
 
-        //public override list<string> fvtplyresatuarnt(string name)
-        //{
-        //    var player = dbcontext.playertbl.where(x => x.name == name).firstordefault();
-        //    var playerid = player.playerid;
-        //    var res = (from a in dbcontext.reslinkplayer
-        //               where a.playerid == playerid
-        //               select new dbrestaurant
-        //               {
-        //                   restaurantid = a.restaurantid,
-        //               }
-        //               ).tolist();
-        //    list<string> listrest = new list<string>();
-        //    foreach (dbrestaurant item in res)
-        //    {
-        //        var adder = dbcontext.restauranttbl.where(x => x.restaurantid == item.restaurantid).firstordefault().name;
-        //        listrest.add(adder);
-        //    }
-        //    return listrest;
-        //}
+        public override PlayersFavRestroList GetbyAge(string Name, int age)
+        {
+            PlayersFavRestroList lst = new PlayersFavRestroList();
+            var RestaurantCollection = dbcontext.Restauranttbl.FirstOrDefault(x => x.Name == Name);
+            List<dbPlayer> pares = new List<dbPlayer>();
+            List<dbPlayer> set = new List<dbPlayer>();
+
+            if (RestaurantCollection != null)
+            {
+                var restaurentId = RestaurantCollection.RestaurantId;
+
+                var LinkDetail = dbcontext.ReslinkPlayer.Where(x => x.RestaurantId == restaurentId).ToList();
+                foreach (var item in LinkDetail)
+                {
+
+                    var abc = dbcontext.Playertbl.Where(x => x.PlayerId == item.PlayerId).FirstOrDefault();
+                    set.Add(abc);
+
+                }
+                if (set.Count > 0)
+                {
+                    foreach (var item in set)
+                    {
+
+                        var years = DateTime.Now.Year - Convert.ToDateTime(item.dob).Year;
+
+                        if (years >= age)
+                        {
+                            pares.Add(item);
+                        }
+
+                        years = 0;
+                    }
+                }
+                List<PlayersFavRestro> res = new List<PlayersFavRestro>();
+                var areas = (from player in dbcontext.Playertbl
+                             from restaurent in dbcontext.Restauranttbl
+                             from Fav in dbcontext.ReslinkPlayer
+                             where player.PlayerId == Fav.PlayerId
+                             && restaurent.RestaurantId == Fav.RestaurantId
+                             select new
+                             {
+                                 player = player,
+                                 restaurent = restaurent,
+                                 Fav = Fav
+                             }).ToList();
+                foreach (var item in areas)
+                {
+                    PlayersFavRestro obj1 = new PlayersFavRestro();
+
+                    obj1.player = item.player;
+                    obj1.restaurent = item.restaurent;
+                    obj1.Fav = item.Fav;
+                    res.Add(obj1);
+                }
+
+
+                lst.rest = RestaurantCollection;
+                lst.player = pares;
+
+
+
+
+            }
+
+            return lst;
+        }
+
+        public override List<string> fvtplyresatuarnt(string name)
+        {
+            var player = dbcontext.Playertbl.Where(x => x.Name == name).FirstOrDefault();
+            var playerid = player.PlayerId;
+            var res = (from a in dbcontext.ReslinkPlayer
+                       where a.PlayerId == playerid
+                       select new dbRestaurant
+                       {
+                           RestaurantId = a.RestaurantId,
+                       }
+                       ).ToList();
+            List<string> Listrest = new List<string>();
+            foreach (dbRestaurant item in res)
+            {
+                var adder = dbcontext.Restauranttbl.Where(x => x.RestaurantId == item.RestaurantId).FirstOrDefault().Name;
+                Listrest.Add(adder);
+            }
+            return Listrest;
+        }
+        
+
+
+
 
 
 
@@ -273,3 +350,20 @@ namespace ResturantProject.Repository
 
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

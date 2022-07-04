@@ -14,6 +14,8 @@ namespace ResturantProject.Models
 
         public DbSet<Reslinkplayer> ReslinkPlayer { get; set; }
 
+        public DbSet<Mapping> tblMapping { get; set; }
+
 
 
     }

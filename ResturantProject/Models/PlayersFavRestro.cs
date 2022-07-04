@@ -21,7 +21,13 @@
 
     {
         public List<dbPlayer> player { get; set; }
+        public dbPlayer pls { get; set; }
+
         public List<dbRestaurant> restaurent { get; set; }
+
+        
+
+        public dbRestaurant rest { get; set; }
 
     }
 }
