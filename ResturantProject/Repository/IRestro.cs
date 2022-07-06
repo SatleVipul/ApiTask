@@ -34,6 +34,8 @@ namespace ResturantProject.Repository
         PlayersFavRestroList GetbyAge(string Name, int age);
 
         List<string> fvtplyresatuarnt(string name);
+        bool RestroPlayerMapping(Reslinkplayer mod);
+        List<PlayersFavRestro> FvrtRes(string name, bool status = true);
 
 
     }
@@ -70,6 +72,8 @@ namespace ResturantProject.Repository
 
         public abstract PlayersFavRestroList GetbyAge(string Name, int age);
         public abstract List<string> fvtplyresatuarnt(string name);
+        public abstract bool RestroPlayerMapping(Reslinkplayer mod);
+        public abstract List<PlayersFavRestro> FvrtRes(string name, bool status = true);
     }
 
     public class ResRepository : RestroAbs
@@ -101,6 +105,30 @@ namespace ResturantProject.Repository
                     dbcontext.Entry(emp).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
                     dbcontext.SaveChanges();
                     return true;
+                }
+            }
+        }
+
+        public override bool RestroPlayerMapping(Reslinkplayer mod)
+        {
+            if (mod == null)
+            {
+                return false;
+            }
+            else
+            {
+                if (mod.PlayerId >= 1 && mod.RestaurantId >= 1)
+
+                {
+                    // if(mod.Fav==null)
+                    dbcontext.Add(mod);
+                    dbcontext.SaveChanges();
+                    return true;
+                }
+
+                else
+                {
+                    return false;
                 }
             }
         }
@@ -251,62 +279,62 @@ namespace ResturantProject.Repository
             return lt;
 
         }
-        //public override List<FavRestroPlayer> FvrtRes(string name, bool status = true)
-        //{
-        //    List<FavRestroPlayer> ListRest = new List<FavRestroPlayer>();
+        public override List<PlayersFavRestro> FvrtRes(string name, bool status = true)
+        {
+            List<PlayersFavRestro> ListRest = new List<PlayersFavRestro>();
 
-        //    if (name != null && name != "")
-        //    {
-        //        var res = (from pl in dbcontext.Playertbl
-        //                   from fv in dbcontext.ReslinkPlayer
-        //                   from rt in dbcontext.Restrotab
-        //                   where pl.PlayersId == fv.PlayersId
-        //                   && rt.RestroId == fv.RestroId
-        //                   && name.Equals(pl.PlayerName)
-        //                   && fv.Fav == status
-        //                   select new
-        //                   {
-        //                       pl = pl,
-        //                       rt = rt,
-        //                       fv = fv
-        //                   }).ToList();
-        //        //select new
-        //        //{
-        //        //    PlayersId = pt.PlayersId,
-        //        //    PlayerName = pt.PlayerName,
-        //        //    PlayerDOB = pt.PlayerDOB.ToString(),
-        //        //    PlayerPrimaryAdd = pt.PlayerPrimaryAdd,
-        //        //    PlayerAlternateAdd = pt.PlayerAlternateAdd,
-        //        //    PlayerOfficeAdd = pt.PlayerOfficeAdd,
-        //        //    PlayerMobNo = pt.PlayerMobNo,
-        //        //    PlayerEmail = pt.PlayerEmail,
-        //        //    PlayerDL = pt.PlayerDL,
-        //        //    PlayerPassport = pt.PlayerPassport,
-        //        //    PlayerCountry = pt.PlayerCountry,
-        //        //    PlayerState = pt.PlayerState,
-        //        //    PlayerCity = pt.PlayerCity,
-        //        //    AddressLine1 = pt.AddressLine1,
-        //        //    AddressLine2 = pt.AddressLine2,
-        //        //    PlayerPostal = pt.PlayerPostal,
-        //        //    RestroId = rt.RestroId,
-        //        //    RestroName = rt.RestroName,
-        //        //    RestroAddress = rt.RestroAddress,
-        //        //    RestroContact = rt.RestroContact
-        //        //}
-        //        //).ToList();
+            if (name != null && name != "")
+            {
+                var res = (from pl in dbcontext.Playertbl
+                           from fv in dbcontext.ReslinkPlayer
+                           from rt in dbcontext.Restauranttbl
+                           where pl.PlayerId == fv.PlayerId
+                           && rt.RestaurantId == fv.RestaurantId
+                           && name.Equals(pl.Name)
+                           && fv.Fav == status
+                           select new
+                           {
+                               pl = pl,
+                               rt = rt,
+                               fv = fv
+                           }).ToList();
+                //select new
+                //{
+                //    PlayersId = pt.PlayersId,
+                //    PlayerName = pt.PlayerName,
+                //    PlayerDOB = pt.PlayerDOB.ToString(),
+                //    PlayerPrimaryAdd = pt.PlayerPrimaryAdd,
+                //    PlayerAlternateAdd = pt.PlayerAlternateAdd,
+                //    PlayerOfficeAdd = pt.PlayerOfficeAdd,
+                //    PlayerMobNo = pt.PlayerMobNo,
+                //    PlayerEmail = pt.PlayerEmail,
+                //    PlayerDL = pt.PlayerDL,
+                //    PlayerPassport = pt.PlayerPassport,
+                //    PlayerCountry = pt.PlayerCountry,
+                //    PlayerState = pt.PlayerState,
+                //    PlayerCity = pt.PlayerCity,
+                //    AddressLine1 = pt.AddressLine1,
+                //    AddressLine2 = pt.AddressLine2,
+                //    PlayerPostal = pt.PlayerPostal,
+                //    RestroId = rt.RestroId,
+                //    RestroName = rt.RestroName,
+                //    RestroAddress = rt.RestroAddress,
+                //    RestroContact = rt.RestroContact
+                //}
+                //).ToList();
 
-        //        foreach (var item in res)
-        //        {
-        //            FavRestroPlayer obj = new FavRestroPlayer();
+                foreach (var item in res)
+                {
+                    PlayersFavRestro obj = new PlayersFavRestro();
 
-        //            obj.pl = item.pl;
-        //            obj.rt = item.rt;
-        //            obj.fv = item.fv;
-        //            ListRest.Add(obj);
-        //        }
-        //    }
-        //    return ListRest;
-        //}
+                    obj.player = item.pl;
+                    obj.restaurent = item.rt;
+                    obj.Fav = item.fv;
+                    ListRest.Add(obj);
+                }
+            }
+            return ListRest;
+        }
 
         public override PlayersFavRestroList GetbyAge(string Name, int age)
         {
@@ -395,15 +423,8 @@ namespace ResturantProject.Repository
             }
             return Listrest;
         }
+
         
-
-
-
-
-
-
-
-
     }
 }
 

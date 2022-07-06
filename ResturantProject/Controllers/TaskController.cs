@@ -97,7 +97,18 @@ namespace ResturantProject.Controllers
             var result = repo.GetbyAge(Name,Age);
             return Ok(result);
         }
+        [HttpPost]
+        public IActionResult RestroPlayerMapping(Reslinkplayer mod)
+        {
+            var successStatus = repo.RestroPlayerMapping(mod);
+            return Ok(successStatus);
+        }
+        [HttpGet("{Name}")]
+        public List<PlayersFavRestro> FvrtRes(string name, bool status = true)
+        {
+          
+            return (repo.FvrtRes(name));
+        }
 
-         
     }
 }

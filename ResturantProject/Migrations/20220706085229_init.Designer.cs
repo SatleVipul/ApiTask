@@ -11,8 +11,8 @@ using ResturantProject.Models;
 namespace ResturantProject.Migrations
 {
     [DbContext(typeof(RpContext))]
-    [Migration("20220610054047_inits")]
-    partial class inits
+    [Migration("20220706085229_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -135,6 +135,9 @@ namespace ResturantProject.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<bool>("Fav")
+                        .HasColumnType("bit");
 
                     b.Property<int>("PlayerId")
                         .HasColumnType("int");

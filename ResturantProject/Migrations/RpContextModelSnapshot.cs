@@ -126,29 +126,6 @@ namespace ResturantProject.Migrations
                     b.ToTable("Restauranttbl");
                 });
 
-            modelBuilder.Entity("ResturantProject.Models.Mapping", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<int>("PlayerId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("RestaurantId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PlayerId");
-
-                    b.HasIndex("RestaurantId");
-
-                    b.ToTable("tblMapping");
-                });
-
             modelBuilder.Entity("ResturantProject.Models.Reslinkplayer", b =>
                 {
                     b.Property<int>("Id")
@@ -169,25 +146,6 @@ namespace ResturantProject.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("ReslinkPlayer");
-                });
-
-            modelBuilder.Entity("ResturantProject.Models.Mapping", b =>
-                {
-                    b.HasOne("ResturantProject.Models.dbPlayer", "player")
-                        .WithMany()
-                        .HasForeignKey("PlayerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ResturantProject.Models.dbRestaurant", "Restaurant")
-                        .WithMany()
-                        .HasForeignKey("RestaurantId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Restaurant");
-
-                    b.Navigation("player");
                 });
 #pragma warning restore 612, 618
         }

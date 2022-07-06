@@ -13,6 +13,7 @@ namespace ResturantProject.Models
      
         public virtual dbPlayer PlayerId { get; set; }
 
+
         //[ForeignKey("UserDetails")]
         //public virtual int UserDetailsId
         //{

@@ -4,7 +4,7 @@
 
 namespace ResturantProject.Migrations
 {
-    public partial class inits : Migration
+    public partial class init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -43,7 +43,8 @@ namespace ResturantProject.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     RestaurantId = table.Column<int>(type: "int", nullable: false),
-                    PlayerId = table.Column<int>(type: "int", nullable: false)
+                    PlayerId = table.Column<int>(type: "int", nullable: false),
+                    Fav = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
