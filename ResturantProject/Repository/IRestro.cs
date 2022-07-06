@@ -251,6 +251,62 @@ namespace ResturantProject.Repository
             return lt;
 
         }
+        //public override List<FavRestroPlayer> FvrtRes(string name, bool status = true)
+        //{
+        //    List<FavRestroPlayer> ListRest = new List<FavRestroPlayer>();
+
+        //    if (name != null && name != "")
+        //    {
+        //        var res = (from pl in dbcontext.Playertbl
+        //                   from fv in dbcontext.ReslinkPlayer
+        //                   from rt in dbcontext.Restrotab
+        //                   where pl.PlayersId == fv.PlayersId
+        //                   && rt.RestroId == fv.RestroId
+        //                   && name.Equals(pl.PlayerName)
+        //                   && fv.Fav == status
+        //                   select new
+        //                   {
+        //                       pl = pl,
+        //                       rt = rt,
+        //                       fv = fv
+        //                   }).ToList();
+        //        //select new
+        //        //{
+        //        //    PlayersId = pt.PlayersId,
+        //        //    PlayerName = pt.PlayerName,
+        //        //    PlayerDOB = pt.PlayerDOB.ToString(),
+        //        //    PlayerPrimaryAdd = pt.PlayerPrimaryAdd,
+        //        //    PlayerAlternateAdd = pt.PlayerAlternateAdd,
+        //        //    PlayerOfficeAdd = pt.PlayerOfficeAdd,
+        //        //    PlayerMobNo = pt.PlayerMobNo,
+        //        //    PlayerEmail = pt.PlayerEmail,
+        //        //    PlayerDL = pt.PlayerDL,
+        //        //    PlayerPassport = pt.PlayerPassport,
+        //        //    PlayerCountry = pt.PlayerCountry,
+        //        //    PlayerState = pt.PlayerState,
+        //        //    PlayerCity = pt.PlayerCity,
+        //        //    AddressLine1 = pt.AddressLine1,
+        //        //    AddressLine2 = pt.AddressLine2,
+        //        //    PlayerPostal = pt.PlayerPostal,
+        //        //    RestroId = rt.RestroId,
+        //        //    RestroName = rt.RestroName,
+        //        //    RestroAddress = rt.RestroAddress,
+        //        //    RestroContact = rt.RestroContact
+        //        //}
+        //        //).ToList();
+
+        //        foreach (var item in res)
+        //        {
+        //            FavRestroPlayer obj = new FavRestroPlayer();
+
+        //            obj.pl = item.pl;
+        //            obj.rt = item.rt;
+        //            obj.fv = item.fv;
+        //            ListRest.Add(obj);
+        //        }
+        //    }
+        //    return ListRest;
+        //}
 
         public override PlayersFavRestroList GetbyAge(string Name, int age)
         {

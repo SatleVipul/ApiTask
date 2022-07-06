@@ -14,9 +14,9 @@
         public dbRestaurant restaurent { get; set; }
 
         public Reslinkplayer Fav  { get; set; }
+  
 
-
-    }
+    }    
     public class PlayersFavRestroList
 
     {
